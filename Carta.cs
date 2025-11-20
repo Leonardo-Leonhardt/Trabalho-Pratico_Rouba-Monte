@@ -5,7 +5,7 @@ namespace Rouba_Monte
 {
     public class Carta
     {
-        private int _numero;
+        private int _valor;
         private string _naipe;
 
         public Carta(int numero, string naipe)
@@ -20,7 +20,7 @@ namespace Rouba_Monte
                 throw new ArgumentException($"O valor '{numero}' para a carta é inválido. O número deve ser entre 1 (Ás) e 13 (Rei).");
             }
 
-            this._numero = numero;
+            this._valor = numero;
             this._naipe = naipe;
         }
 
@@ -49,7 +49,7 @@ namespace Rouba_Monte
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine($"Carta");
-            sb.AppendLine($"Numero: {_numero}");
+            sb.AppendLine($"Numero: {_valor}");
             sb.AppendLine($"Naipe: {_naipe}");
 
             return sb.ToString();
