@@ -23,7 +23,6 @@ namespace Rouba_Monte
 
             EmbaranhaMonte();
 
-
             return true;
 
         }
