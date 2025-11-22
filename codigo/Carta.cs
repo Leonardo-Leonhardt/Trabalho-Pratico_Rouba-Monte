@@ -54,5 +54,11 @@ namespace Rouba_Monte
 
             return sb.ToString();
         }
+
+         public int Valor
+        {
+            get { return _valor; }
+            set { _valor = value; }
+        }
     }
 }

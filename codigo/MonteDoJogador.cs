@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rouba_Monte
 {
+    // falta testa
     internal class MonteDoJogador : Monte
     {
         public bool AddCarta(Carta carta)

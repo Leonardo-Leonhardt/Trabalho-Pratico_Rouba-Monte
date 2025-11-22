@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Rouba_Monte
 {
+    // ja testado
     internal class MonteDoJogo : Monte
     {
         private string[] _naipe = new string[] { "copas", "espadas", "ouros", "paus" };
         private List<Carta> cartas = new List<Carta>();
         private int _tamanhoBaralho = 52;
+        private int _numDeCartas = 13;
 
         public bool GerarMonte(int numDeBaralhos)
         {
@@ -34,9 +36,12 @@ namespace Rouba_Monte
 
             for (int i = 0; i < _naipe.Length; i++)
             {
-                for (int j = 0; j < cartasDeNaipes; j++)
+                for (int x = 0; x < cartasDeNaipes / 13; x++)
                 {
-                    cartas.Add(new Carta(j + 1, _naipe[i]));
+                    for (int j = 0; j < _numDeCartas; j++)
+                    {
+                        cartas.Add(new Carta(j + 1, _naipe[i]));
+                    }
                 }
             }
 

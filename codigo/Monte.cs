@@ -10,13 +10,18 @@ namespace Rouba_Monte
     {
         protected Stack<Carta> _cartas = new Stack<Carta>();
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
 
+            foreach (var carta in _cartas)
+            {
+                sb.Append($"{carta.ToString()}\n");
+            }
 
+            sb.AppendLine($"Numeros de cartas: {_cartas.Count()}");
 
-
-
-
-
-
+            return sb.ToString();
+        }
     }
 }
