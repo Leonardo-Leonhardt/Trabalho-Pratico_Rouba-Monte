@@ -16,7 +16,9 @@ namespace Rouba_Monte
                 return false;
             }
 
+            _numDeCartasNoMonte++;
             _cartas.Push(carta);
+
             return true;
         }
 
@@ -29,6 +31,7 @@ namespace Rouba_Monte
 
             foreach (Carta carta in cartas)
             {
+                _numDeCartasNoMonte++;
                 _cartas.Push(carta);
             }
 
@@ -37,7 +40,7 @@ namespace Rouba_Monte
 
         public Carta VerUtimaCarta()
         {
-            return _cartas.Pop();
+            return _cartas.Peek();
         }
     }
 }
