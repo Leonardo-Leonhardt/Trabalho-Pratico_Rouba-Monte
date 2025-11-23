@@ -29,7 +29,7 @@ namespace Rouba_Monte
         /// </summary>
         /// <param name="outro"></param>
         /// <returns>booleano para a condição descrita</returns>
-        sealed public bool RoubarMonte(MonteDoJogador outro)
+        public bool RoubarMonte(MonteDoJogador outro)
         {
             if(_monte.VerUtimaCarta().Valor == outro.VerUtimaCarta().Valor)
             {
@@ -44,7 +44,7 @@ namespace Rouba_Monte
         /// </summary>
         /// <param name="carta"></param>
         /// <returns>carta da vez ou nulo se o Monte do Jogo estiver vazio</returns>
-        sealed public Carta? ComprarCarta(Carta? carta)
+        public Carta? ComprarCarta(Carta? carta)
         {
             if (carta is not null)
             {
