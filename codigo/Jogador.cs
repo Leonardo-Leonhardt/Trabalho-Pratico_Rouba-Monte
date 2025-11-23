@@ -6,11 +6,14 @@ namespace Rouba_Monte
 {
     internal class Jogador
     {
+        #region Variáveis
         private string _nome;
         private int _posicao;
         private MonteDoJogador _monte;
         private Queue<int> _ranking;
+        #endregion
 
+        #region Construtores
         public Jogador(string nome)
         {
             _nome = nome;
@@ -18,13 +21,15 @@ namespace Rouba_Monte
             _monte = new MonteDoJogador();
             _ranking = new Queue<int>();
         }
+        #endregion
 
+        #region Métodos
         /// <summary>
         /// Rouba o monte do outro jogador se o valor da carta acima do seu monte for igual ao dele. 
         /// </summary>
         /// <param name="outro"></param>
         /// <returns>booleano para a condição descrita</returns>
-        public bool RoubarMonte(MonteDoJogador outro)
+        sealed public bool RoubarMonte(MonteDoJogador outro)
         {
             if(_monte.VerUtimaCarta().Valor == outro.VerUtimaCarta().Valor)
             {
@@ -38,8 +43,8 @@ namespace Rouba_Monte
         /// Método para Comprar a Carta da Vez
         /// </summary>
         /// <param name="carta"></param>
-        /// <returns>carta da vez ou nulo se o monte estiver vazio</returns>
-        public Carta? ComprarCarta(Carta? carta)
+        /// <returns>carta da vez ou nulo se o Monte do Jogo estiver vazio</returns>
+        sealed public Carta? ComprarCarta(Carta? carta)
         {
             if (carta is not null)
             {
@@ -49,16 +54,34 @@ namespace Rouba_Monte
             return null;
         }
 
+        /// <summary>
+        /// Calcula a pontuação do jogador com base no valor de cada carta em seu monte.
+        /// </summary>
+        /// <returns>Pontuação atual do jogador</returns>
         public int VerificarPontuacao()
         {
-            
+            int pontuacao = 0;
+            foreach(Carta carta in _monte.Carta)
+            {
+                pontuacao += carta.Valor;
+            }
+            return pontuacao;
         }
 
+        /// <summary>
+        /// Função para atualizar o ranking do jogador com no máximo 5 resultados salvos.
+        /// </summary>
         public void AtualizarRank()
         {
-            
+            _ranking.Enqueue(_posicao);
+            if(_ranking.Count > 5) 
+                _ranking.Dequeue();
         }
 
+        /// <summary>
+        /// Método para exibir toda a lista de rank
+        /// </summary>
+        /// <returns>rank das ultimas 5 partidas</returns>
         public string ExibirRank()
         {
             StringBuilder rankAtualizado = new StringBuilder();
@@ -70,5 +93,6 @@ namespace Rouba_Monte
             }
             return rankAtualizado.ToString();
         }
+        #endregion
     }
 }
