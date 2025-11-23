@@ -31,8 +31,8 @@ namespace Rouba_Monte
 
         private bool GerarBaralho(int numDeBaralhos)
         {
-
-            int cartasDeNaipes = (numDeBaralhos * _tamanhoBaralho) / _naipe.Length;
+            _numDeCartasNoMonte = numDeBaralhos * _tamanhoBaralho;
+            int cartasDeNaipes = _numDeCartasNoMonte / _naipe.Length;
 
             for (int i = 0; i < _naipe.Length; i++)
             {
@@ -79,7 +79,18 @@ namespace Rouba_Monte
                 return null;
             }
 
+            _numDeCartasNoMonte--;
+
             return _cartas.Pop();
+        }
+
+        public Stack<Carta> PegarBaralho()
+        {
+            Stack<Carta> baralho = _cartas;
+
+            _cartas.Clear();
+
+            return baralho;
         }
 
         private bool ValidarMonta()

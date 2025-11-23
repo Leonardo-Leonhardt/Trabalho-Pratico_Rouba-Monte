@@ -31,6 +31,8 @@ namespace Rouba_Monte
         /// <returns>booleano para a condição descrita</returns>
         public bool RoubarMonte(MonteDoJogador outro)
         {
+            // seria da carta da vem em vez do monte 
+            // tem um metodo que retorna o monte do jogador e apaga ele 
             if(_monte.VerUtimaCarta().Valor == outro.VerUtimaCarta().Valor)
             {
                 _monte.AddCarta(outro);
@@ -60,6 +62,7 @@ namespace Rouba_Monte
         /// <returns>Pontuação atual do jogador</returns>
         public int VerificarPontuacao()
         {
+            // acho que a pontuação e qualculada com base no numero de cartas nao no valor delas
             int pontuacao = 0;
             foreach(Carta carta in _monte.Carta)
             {
@@ -91,7 +94,7 @@ namespace Rouba_Monte
             foreach(int rank in _ranking)
             {
                 i++;
-                rankAtualizado.appendLine($"{i} - {rank}");
+                rankAtualizado.AppendLine($"{i} - {rank}");
             }
             return rankAtualizado.ToString();
         }

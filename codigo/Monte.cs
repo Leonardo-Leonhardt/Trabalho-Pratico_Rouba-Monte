@@ -9,6 +9,7 @@ namespace Rouba_Monte
     internal class Monte
     {
         protected Stack<Carta> _cartas = new Stack<Carta>();
+        protected int _numDeCartasNoMonte;
 
         public override string ToString()
         {
@@ -19,9 +20,17 @@ namespace Rouba_Monte
                 sb.Append($"{carta.ToString()}\n");
             }
 
-            sb.AppendLine($"Numeros de cartas: {_cartas.Count()}");
-
             return sb.ToString();
+        }
+
+        public Stack<Carta> Cartas
+        {
+            get { return _cartas; }
+        }
+
+        public int QuantCartaTem
+        {
+            get { return _numDeCartasNoMonte; }
         }
     }
 }
