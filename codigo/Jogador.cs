@@ -29,13 +29,12 @@ namespace Rouba_Monte
         /// </summary>
         /// <param name="outro"></param>
         /// <returns>booleano para a condição descrita</returns>
-        public bool RoubarMonte(MonteDoJogador outro)
+        public bool RoubarMonte(Carta cartaDaVez, MonteDoJogador outro)
         {
-            // seria da carta da vem em vez do monte 
-            // tem um metodo que retorna o monte do jogador e apaga ele 
             if(_monte.VerUtimaCarta().Valor == outro.VerUtimaCarta().Valor)
             {
-                _monte.AddCarta(outro);
+                _monte.AddCarta(outro.PegarBaralho());
+                _monte.AddCarta(cartaDaVez);
                 return true;
             }
             return false;
@@ -57,18 +56,12 @@ namespace Rouba_Monte
         }
 
         /// <summary>
-        /// Calcula a pontuação do jogador com base no valor de cada carta em seu monte.
+        /// Calcula a pontuação do jogador com base no valor de cartas em seu monte.
         /// </summary>
         /// <returns>Pontuação atual do jogador</returns>
         public int VerificarPontuacao()
         {
-            // acho que a pontuação e qualculada com base no numero de cartas nao no valor delas
-            int pontuacao = 0;
-            foreach(Carta carta in _monte.Carta)
-            {
-                pontuacao += carta.Valor;
-            }
-            return pontuacao;
+            return _monte.Count;
         }
 
         /// <summary>
