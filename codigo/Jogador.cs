@@ -71,8 +71,10 @@ namespace Rouba_Monte
         /// <summary>
         /// Função para atualizar o ranking do jogador com no máximo 5 resultados salvos.
         /// </summary>
-        public void AtualizarRank()
+        /// <param name="posicao"></param>
+        public void AtualizarRank(int posicao)
         {
+            _posicao = posicao;
             _ranking.Enqueue(_posicao);
             if(_ranking.Count > 5) 
                 _ranking.Dequeue();
