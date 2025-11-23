@@ -37,6 +37,14 @@ namespace Rouba_Monte
 
             return true;
         }
+        public Stack<Carta> PegarBaralho()
+        {
+            Stack<Carta> baralho = _cartas;
+
+            _cartas.Clear();
+
+            return baralho;
+        }
 
         public Carta VerUtimaCarta()
         {

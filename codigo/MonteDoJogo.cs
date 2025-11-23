@@ -84,14 +84,6 @@ namespace Rouba_Monte
             return _cartas.Pop();
         }
 
-        public Stack<Carta> PegarBaralho()
-        {
-            Stack<Carta> baralho = _cartas;
-
-            _cartas.Clear();
-
-            return baralho;
-        }
 
         private bool ValidarMonta()
         {
