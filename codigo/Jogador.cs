@@ -29,11 +29,11 @@ namespace Rouba_Monte
         /// </summary>
         /// <param name="outro"></param>
         /// <returns>booleano para a condição descrita</returns>
-        public bool RoubarMonte(Carta cartaDaVez, MonteDoJogador outro)
+        public bool RoubarMonte(Carta cartaDaVez, Jogador jogador)
         {
-            if(_monte.VerUtimaCarta().Valor == outro.VerUtimaCarta().Valor)
+            if(_monte.VerUtimaCarta().Valor == jogador.Monte.VerUtimaCarta().Valor)
             {
-                _monte.AddCarta(outro.PegarBaralho());
+                _monte.AddCarta(jogador.Monte.PegarBaralho());
                 _monte.AddCarta(cartaDaVez);
                 return true;
             }
@@ -45,14 +45,9 @@ namespace Rouba_Monte
         /// </summary>
         /// <param name="carta"></param>
         /// <returns>carta da vez ou nulo se o Monte do Jogo estiver vazio</returns>
-        public Carta? ComprarCarta(Carta? carta)
+        public Carta? ComprarCarta(MonteDoJogo monteDeCompras)
         {
-            if (carta is not null)
-            {
-                _monte.Push(carta);
-                return _monte.Peek();   
-            }
-            return null;
+            return monteDeCompras.ComprarCarta();   
         }
 
         /// <summary>
@@ -61,7 +56,7 @@ namespace Rouba_Monte
         /// <returns>Pontuação atual do jogador</returns>
         public int VerificarPontuacao()
         {
-            return _monte.Count;
+            return _monte.Cartas.Count;
         }
 
         /// <summary>
@@ -90,6 +85,14 @@ namespace Rouba_Monte
                 rankAtualizado.AppendLine($"{i} - {rank}");
             }
             return rankAtualizado.ToString();
+        }
+
+        public Monte Monte{
+            get { return _monte; }
+        }
+        public override string ToString()
+        {
+            return $"Posição: {_posicao} | Nome: {_nome}";
         }
         #endregion
     }
