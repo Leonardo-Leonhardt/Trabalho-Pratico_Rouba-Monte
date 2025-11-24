@@ -14,6 +14,10 @@ namespace Rouba_Monte
         private int _tamanhoBaralho = 52;
         private int _numDeCartas = 13;
 
+        public MonteDoJogo(int qtdeBaralhos)
+        {
+            GerarMonte(qtdeBaralhos);
+        }
         public bool GerarMonte(int numDeBaralhos)
         {
             if (numDeBaralhos < 1)
@@ -74,7 +78,7 @@ namespace Rouba_Monte
 
         public Carta? ComprarCarta()
         {
-            if (!ValidarMonta())
+            if (!ValidarMonte())
             {
                 return null;
             }
@@ -85,7 +89,7 @@ namespace Rouba_Monte
         }
 
 
-        private bool ValidarMonta()
+        private bool ValidarMonte()
         {
             if (_cartas.Count == 0)
             {

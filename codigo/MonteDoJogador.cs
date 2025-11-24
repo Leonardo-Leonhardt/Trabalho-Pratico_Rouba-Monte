@@ -48,6 +48,10 @@ namespace Rouba_Monte
 
         public Carta VerUtimaCarta()
         {
+            if (_cartas.Count == 0)
+            {
+                throw new InvalidOperationException("O monte está vazio");
+            }
             return _cartas.Peek();
         }
     }

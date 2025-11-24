@@ -22,51 +22,39 @@
         static void Main(string[] args)
         {
             char resp = 's';
-
-            while(resp != "n")
+            Partida partida;
+            while(resp != 'n')
             {
-                NovaPartida();
+                partida = new Partida(jogadores);
+                partida.IniciarPartida();
+
+                MenuHistorico();
+
                 Console.WriteLine("Deseja iniciar uma nova partida?");
-                resp = Console.ReadLine();
+                resp = char.Parse(Console.ReadLine());
             }
         }
 
-        static void NovaPartida()
+        static void MenuHistorico()
         {
-            Console.WriteLine("Com quantos baralhos vocês jogarão?");
-            
-            Monte monteDoJogo = new MonteDoJogo(int.Parse(Console.ReadLine()));
-            Descarte descarte = new Descarte();
-
-            foreach(Jogador jogador in jogadores) //Não linear ainda
+            Console.WriteLine("Deseja visualizar o histórico de algum jogador?");
+            char resp = char.Parse(Console.ReadLine());
+            switch (resp)
             {
-                while(NovaJogada(jogador, monteDoJogo, descarte));
+                case 'n':
+                break;
+                case 's':
+                    Console.WriteLine("Digite o nome dele");
+                    VisualizarHistorico(Console.ReadLine());
+                break;
+                default:
+                break;
             }
         }
 
-        static bool NovaJogada(Jogador jogador, Monte monteDoJogo, Descarte descarte)
+        static void VisualizarHistorico(string nome)
         {
-            Carta cartaDaVez = jogador.ComprarCarta(monteDoJogo);
-            if(!TentarRoubarMontes(jogador, cartaDaVez))
-                descarte.ReceberDescarte(cartaDaVez);
-        }
 
-        static bool TentarRoubarMontes(Jogador jogador, Carta cartaDaVez)
-        {
-            var conseguiuRoubar = false;
-            List<Jogador> jogadoresRoubaveis = new List<Jogador>();
-
-            foreach(Jogador jogadorComparado in jogadores) //Não linear ainda
-            {
-                if(jogador != jogadorComparado)
-                {    
-                    if (jogador.RoubarMonte(cartaDaVez, jogadorComparado))
-                    {
-                        conseguiuRoubar = true;
-                    }
-                }
-            }
-            return conseguiuRoubar;
         }
     }
 }

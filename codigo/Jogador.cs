@@ -14,7 +14,7 @@ namespace Rouba_Monte
         #endregion
 
         #region Construtores
-        public Jogador(string nome)
+        public Jogador(string? nome)
         {
             _nome = nome;
             _posicao = 0;
@@ -25,19 +25,63 @@ namespace Rouba_Monte
 
         #region Métodos
         /// <summary>
-        /// Rouba o monte do outro jogador se o valor da carta acima do seu monte for igual ao dele. 
+        /// Rouba o monte do outro jogador e o coloca acima do seu
         /// </summary>
         /// <param name="outro"></param>
         /// <returns>booleano para a condição descrita</returns>
-        public bool RoubarMonte(Carta cartaDaVez, Jogador jogador)
+        public void RoubarMonte(Carta cartaDaVez, Jogador jogador)
         {
-            if(_monte.VerUtimaCarta().Valor == jogador.Monte.VerUtimaCarta().Valor)
+            _monte.AddCarta(jogador.Monte.PegarBaralho());
+            _monte.AddCarta(cartaDaVez);
+        }
+
+        /// <summary>
+        /// Verifica se a carta da vez é igual ao monte de outro jogador
+        /// </summary>
+        /// <param name="cartaDaVez"></param>
+        /// <param name="jogador"></param>
+        /// <returns>verdadeiro caso seja, falso caso contrário</returns>
+        public bool PodeRoubar(Carta cartaDaVez, Jogador jogador)
+        {
+            try
             {
-                _monte.AddCarta(jogador.Monte.PegarBaralho());
-                _monte.AddCarta(cartaDaVez);
-                return true;
+                if(cartaDaVez.Valor == jogador.Monte.VerUtimaCarta().Valor)
+                    return true;
+            }
+            catch(InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
             return false;
+        }
+
+        public bool CompararCartas(Carta outra)
+        {
+            try
+            {
+                if(outra.Valor == _monte.VerUtimaCarta().Valor)
+                    return true;
+            }
+            
+            catch(InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return false;
+        }
+        
+
+        /// <summary>
+        /// Adiciona a carta do descarte e a carta da vez ao monte do jogador
+        /// </summary>
+        /// <param name="cartaDescarte"></param>
+        /// <param name="cartaDaVez"></param>
+        public void PegarDescarte(Carta cartaDescarte, Carta cartaDaVez)
+        {
+            _monte.AddCarta(cartaDescarte);
+            _monte.AddCarta(cartaDaVez);
         }
 
         /// <summary>
@@ -87,12 +131,16 @@ namespace Rouba_Monte
             return rankAtualizado.ToString();
         }
 
-        public Monte Monte{
-            get { return _monte; }
-        }
         public override string ToString()
         {
             return $"Posição: {_posicao} | Nome: {_nome}";
+        }
+        #endregion
+
+        #region Getters e Setters
+        public MonteDoJogador Monte
+        {
+            get { return _monte; }
         }
         #endregion
     }
