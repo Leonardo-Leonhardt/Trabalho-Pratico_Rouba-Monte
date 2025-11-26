@@ -10,7 +10,7 @@ namespace Rouba_Monte
         private Descarte _descarte;
         private Jogador[] _jogadores;
         private int _rodada;
-        private Jogador[] _ranking;
+        private Insercao _ranking;
 
         public Partida(Jogador[] jogadores, MonteDoJogo monteDoJogo)
         {
@@ -24,7 +24,7 @@ namespace Rouba_Monte
         {
             while (_monteDoJogo.QuantCartaTem > 0)
             {
-                Console.ReadKey();
+                //Console.ReadKey();
                 IniciarNovaRodada();
             }
 
@@ -48,24 +48,18 @@ namespace Rouba_Monte
             if (cartaDaVez is null)
                 return;
 
-            Console.WriteLine(cartaDaVez); //usa o método ToString implicitamente, alterar para o formato de arquivo pedido no trab
+            //Console.WriteLine(cartaDaVez); //usa o método ToString implicitamente, alterar para o formato de arquivo pedido no trab
 
             if (TentarRoubarMontes(jogador, cartaDaVez) || TentarPegarDescarte(jogador, _descarte, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez))
-            {
                 NovaJogada(jogador, _monteDoJogo, _descarte);
-
-            }
             else
-            {
                 _descarte.ReceberDescarte(cartaDaVez);
-            }
         }
-
 
         private bool TentarRoubarMontes(Jogador jogador, Carta cartaDaVez)
         {
             List<Jogador> jogadoresRoubaveis = new List<Jogador>();
-            Jogador jogadorRoubado = new Jogador();
+            Jogador jogadorRoubado = new Jogador(null);
             bool conseguiuRoubar = false;
             int maiorMonte = 0;
 
@@ -121,24 +115,30 @@ namespace Rouba_Monte
         private void FinalizarPartida()
         {
             DefinirRanking(); //o jogador que tiver mais cartas ganha a partida, em caso de empate todos ganham
-            ExibirVencedores(); //nome, posição e cartas no monte
-            //ExibirRanking(); //ordenado por cartas no monte de cada jogador
+            //ExibirVencedores(); //nome, posição e cartas no monte
+            ExibirRanking(); //ordenado por cartas no monte de cada jogador
         }
 
         private void DefinirRanking()
         {
-
+            _ranking = new Insercao(_jogadores);
+            _ranking.Ordenar();
         }
 
         private void ExibirVencedores()
         {
-            Console.ReadKey();
+
+            /*Console.ReadKey();
             int pontuacaoMax = _ranking[0].Monte.QuantCartaTem;
             foreach (Jogador jogador in _ranking)
             {
                 if (jogador.Monte.QuantCartaTem >= pontuacaoMax)
                     Console.WriteLine($"{jogador}, você é um(a) Vencedor(a)!!");
-            }
+            }*/
+        }
+        private void ExibirRanking()
+        {
+            Console.WriteLine(_ranking);
         }
     }
 }

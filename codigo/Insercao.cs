@@ -6,10 +6,10 @@ namespace Rouba_Monte
 {
     class Insercao
     {
-        private int[] _array;
+        private Jogador[] _array;
         private int _tamanho;
 
-        public Insercao(int[] array)
+        public Insercao(Jogador[] array)
         {
             _array = array;
             _tamanho = array.Length;
@@ -18,14 +18,18 @@ namespace Rouba_Monte
         public void Ordenar()
         {
             for (int i = 1; i < _tamanho; i++) {
-                int tmp = _array[i];
+                
+                int qtdeCartas = _array[i].Monte.QuantCartaTem;
+                Jogador objTmp = _array[i];
+                
                 int j = i - 1;
-                while ((j >= 0) && (_array[j] > tmp))
+                
+                while ((j >= 0) && (_array[j].Monte.QuantCartaTem > qtdeCartas))
                 {
                     _array[j + 1] = _array[j];
                     j--;
                 }
-                _array[j + 1] = tmp;
+                _array[j + 1] = objTmp;
             }
         }
 

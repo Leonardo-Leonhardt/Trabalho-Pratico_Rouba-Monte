@@ -5,7 +5,6 @@ namespace Rouba_Monte
     internal class Program
     {
         static Jogador[] jogadores;
-        static MonteDoJogo monteDoJogo;
 
         static int tempoDeEsperar = 5000;
 
@@ -13,37 +12,27 @@ namespace Rouba_Monte
         {
             Cabecalho();
 
-            QuantidadeDeJogador();
-            QuantidadeDeBaralho();
-
-
-
-
-
-
-
-
-
-
-
-
-            Cabecalho();
-            Console.WriteLine($"\nQuantidade de Cartas: {monteDoJogo.QuantCartaTem}");
-            Console.WriteLine($"\nJogadores: ");
-            foreach (Jogador jogador in jogadores)
-            {
-                Console.WriteLine($"{jogador.ToString()}");
-            }
-
-
-            Console.ReadKey();
+            QuantidadeDeJogadores();
+            IniciarPartidas();
+            //FinalizarPrograma();
         }
 
-        static void StartTheGame()
+        static void IniciarPartidas()
         {
+            char resp = 's';
 
+            Partida partida;
+            while(resp != 'n')
+            {
+                partida = new Partida(jogadores, QuantidadeDeBaralho());
+                partida.IniciarPartida();
+
+                Console.WriteLine("Deseja iniciar uma nova partida? - s / n");
+                
+                resp = char.Parse(Console.ReadLine());
+            }
         }
-        static void QuantidadeDeJogador()
+        static void QuantidadeDeJogadores()
         {
             int numDeJogadores;
             string mensagemErro = "Número de jogadores insuficiente!!!";
@@ -92,7 +81,7 @@ namespace Rouba_Monte
             }
         }
 
-        static void QuantidadeDeBaralho()
+        static MonteDoJogo QuantidadeDeBaralho()
         {
             int numDeBaralho;
             string mensagemErro = "Número de Baralho insuficiente!!!";
@@ -111,7 +100,7 @@ namespace Rouba_Monte
 
             } while (numDeBaralho < 1);
 
-            monteDoJogo = new MonteDoJogo(numDeBaralho);
+            return new MonteDoJogo(numDeBaralho);
         }
 
         static void Cabecalho()
