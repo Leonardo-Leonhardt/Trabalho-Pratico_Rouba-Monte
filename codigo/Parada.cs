@@ -9,7 +9,7 @@ namespace Rouba_Monte
 {
     public static class Parada
     {
-                static int milissegundos = 5000;
+        static int milissegundos = 5000;
 
         public static void Esperar(string mensagem)
         {
@@ -17,7 +17,7 @@ namespace Rouba_Monte
 
             Cabecalho();
             Console.WriteLine($"{mensagem}\n");
-            Console.WriteLine("Aguarde 5 segundos ou aperte ENTER para começar...");
+            Console.WriteLine("Aguarde 5 segundos ou aperte ENTER...");
             while (tempoPassou < milissegundos)
             {
                 if (Console.KeyAvailable)
@@ -31,6 +31,16 @@ namespace Rouba_Monte
                     tempoPassou += 100;
                 }
             }
+        }
+
+        public static void Esperar()
+        {
+            int tempoPassou = 0;
+
+            Console.WriteLine("\nAperte ENTER para continuar...");
+
+            Console.ReadKey(true);
+            tempoPassou = milissegundos;
         }
     }
 }
