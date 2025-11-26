@@ -24,7 +24,7 @@ namespace Rouba_Monte
                 
                 int j = i - 1;
                 
-                while ((j >= 0) && (_array[j].Monte.QuantCartaTem > qtdeCartas))
+                while ((j >= 0) && (_array[j].Monte.QuantCartaTem < qtdeCartas))
                 {
                     _array[j + 1] = _array[j];
                     j--;
@@ -33,14 +33,29 @@ namespace Rouba_Monte
             }
         }
 
+        public void AtualizarRank(int partida)
+        {
+            var rank = 1;
+            foreach (Jogador jogador in _array)
+            {
+                jogador.AtualizarRank(partida, rank);
+                rank++;
+            }
+        }
+
         public override string ToString()
         {
             StringBuilder vetorString = new StringBuilder();
             for (int i = 0; i < _array.Length; i++)
             {
-                vetorString.Append($"{i} - {_array[i]} ");
+                vetorString.AppendLine($"{_array[i]} ");
             }
             return vetorString.ToString();
+        }    
+
+        public Jogador[] Array
+        {
+            get { return _array; }
         }
     }
 }

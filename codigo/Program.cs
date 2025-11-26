@@ -25,13 +25,33 @@ namespace Rouba_Monte
             while(resp != 'n')
             {
                 partida = new Partida(jogadores, QuantidadeDeBaralho());
-                partida.IniciarPartida();
-
-                Console.WriteLine("Deseja iniciar uma nova partida? - s / n");
-                
+                partida.IniciarPartida();   
+                ExibirHistoricoJogador();
+                Console.WriteLine("\nDeseja iniciar uma nova partida? - s / n");
                 resp = char.Parse(Console.ReadLine());
             }
         }
+
+        static void ExibirHistoricoJogador()
+        {
+            char resp = 's';
+            string nome = "";
+            Console.WriteLine("\nDeseja visualizar o histórico de algum jogador em específico? - s / n");
+            resp = char.Parse(Console.ReadLine());
+            if(resp == 's')
+            {
+                Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");
+                nome = Console.ReadLine();
+            }
+            for(int i = 0; i < jogadores.Length; i++)
+            {
+                if(jogadores[i].Nome == nome)
+                {
+                    Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
+                }
+            }
+        } 
+
         static void QuantidadeDeJogadores()
         {
             int numDeJogadores;
@@ -90,7 +110,7 @@ namespace Rouba_Monte
             {
                 Cabecalho();
 
-                Console.WriteLine($"Quantos Baralho vão ter o jogo?");
+                Console.WriteLine($"Quantos Baralhos vão ter o jogo?");
                 numDeBaralho = Convert.ToInt32(Console.ReadLine());
 
                 if (numDeBaralho < 1)
