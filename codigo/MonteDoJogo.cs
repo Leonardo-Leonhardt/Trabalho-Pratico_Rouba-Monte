@@ -18,7 +18,8 @@ namespace Rouba_Monte
         {
             GerarMonte(qtdeBaralhos);
         }
-        public bool GerarMonte(int numDeBaralhos)
+
+        private bool GerarMonte(int numDeBaralhos)
         {
             if (numDeBaralhos < 1)
             {
@@ -87,7 +88,6 @@ namespace Rouba_Monte
 
             return _cartas.Pop();
         }
-
 
         private bool ValidarMonte()
         {

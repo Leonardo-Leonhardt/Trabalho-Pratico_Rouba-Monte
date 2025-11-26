@@ -133,7 +133,7 @@ namespace Rouba_Monte
 
         public override string ToString()
         {
-            return $"Posição: {_posicao} | Nome: {_nome}";
+            return $"Posição: {_posicao}º | Nome: {_nome}";
         }
         #endregion
 
