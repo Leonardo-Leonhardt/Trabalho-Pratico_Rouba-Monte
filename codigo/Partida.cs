@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Rouba_Monte.Tela;
+using static Rouba_Monte.Parada;
 
 namespace Rouba_Monte
 {
@@ -24,12 +26,14 @@ namespace Rouba_Monte
 
         public void IniciarPartida()
         {
-            Console.WriteLine($"Monte do jogo criado com {_monteDoJogo.QuantCartaTem} cartas");
+            Cabecalho();
+            Console.WriteLine($"Monte do jogo criado com {_monteDoJogo.QuantCartaTem} cartas\n");
             ResetarDadoJogadores();
 
             while (_monteDoJogo.QuantCartaTem > 0)
             {
                 //Console.ReadKey();
+                Cabecalho();
                 IniciarNovaRodada();
             }
 
@@ -39,7 +43,7 @@ namespace Rouba_Monte
 
         private void ResetarDadoJogadores()
         {
-            foreach(Jogador jogador in _jogadores)
+            foreach (Jogador jogador in _jogadores)
             {
                 jogador.ResetarDados();
             }
@@ -48,11 +52,16 @@ namespace Rouba_Monte
         private void IniciarNovaRodada()
         {
             _rodada++;
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write($"\n\nIniciando a Rodada {_rodada}");
             Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nNº de cartas: {_monteDoJogo.QuantCartaTem}");
+            Console.ResetColor();
+
             try
-            {    
+            {
                 foreach (Jogador jogador in _jogadores)
                 {
                     NovaJogada(jogador, _monteDoJogo, _descarte);
@@ -96,14 +105,14 @@ namespace Rouba_Monte
             {
                 if (jogadorComparado != jogador && jogador.PodeRoubar(cartaDaVez, jogadorComparado))
                 {
-                    if(jogadorComparado.Monte.QuantCartaTem > maiorMonte)
+                    if (jogadorComparado.Monte.QuantCartaTem > maiorMonte)
                     {
                         maiorMonte = jogadorComparado.Monte.QuantCartaTem;
                         jogadorRoubado = jogadorComparado;
                         jogadoresRoubaveis.Clear();
                         jogadoresRoubaveis.Add(jogadorComparado);
                     }
-                    else if(jogadorComparado.Monte.QuantCartaTem == maiorMonte)
+                    else if (jogadorComparado.Monte.QuantCartaTem == maiorMonte)
                         jogadoresRoubaveis.Add(jogadorComparado);
 
                     conseguiuRoubar = true;
@@ -115,7 +124,7 @@ namespace Rouba_Monte
                 Random jogadorAleatorio = new Random();
                 jogadorRoubado = jogadoresRoubaveis[jogadorAleatorio.Next(jogadoresRoubaveis.Count)];
             }
-            
+
             if (conseguiuRoubar)
             {
                 Console.Write($"{jogadorRoubado.Nome} teve seu monte com {jogadorRoubado.Monte.QuantCartaTem} cartas roubado por {jogador.Nome}. A carta do topo de seu monte era {jogadorRoubado.Monte.VerUtimaCarta()}");
@@ -149,9 +158,12 @@ namespace Rouba_Monte
 
         private void FinalizarPartida()
         {
+            Cabecalho();
             DefinirRanking(); //o jogador que tiver mais cartas ganha a partida, em caso de empate todos ganham
             ExibirVencedores(); //nome, posição e cartas no monte
             ExibirRanking(); //ordenado por cartas no monte de cada jogador
+
+            Console.WriteLine($"\n\n==> {_descarte.ToString()}"); //so um teste
         }
 
         private void DefinirRanking()

@@ -1,12 +1,12 @@
 ﻿using System.Text;
+using static Rouba_Monte.Tela;
+using static Rouba_Monte.Parada;
 
 namespace Rouba_Monte
 {
     internal class Program
     {
         static Jogador[] jogadores;
-
-        static int tempoDeEsperar = 5000;
 
         static void Main()
         {
@@ -22,12 +22,13 @@ namespace Rouba_Monte
             char resp = 's';
 
             Partida partida;
-            while(resp != 'n')
+            while (resp != 'n')
             {
                 partida = new Partida(jogadores, QuantidadeDeBaralho());
-                partida.IniciarPartida();   
+                partida.IniciarPartida();
                 ExibirHistoricoJogador();
-                Console.WriteLine("\nDeseja iniciar uma nova partida? - s / n");
+                Console.WriteLine("\nDeseja iniciar uma nova partida? - s / n");// talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
+
                 resp = char.Parse(Console.ReadLine());
             }
         }
@@ -36,21 +37,26 @@ namespace Rouba_Monte
         {
             char resp = 's';
             string nome = "";
-            Console.WriteLine("\nDeseja visualizar o histórico de algum jogador em específico? - s / n");
+            Console.WriteLine("\nDeseja visualizar o histórico de algum jogador em específico? - s / n"); // talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
             resp = char.Parse(Console.ReadLine());
-            if(resp == 's')
+            resp = char.ToUpper(resp);
+
+
+            if (resp == 'S')
             {
-                Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");
+                Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");//tratamento de nome errado
                 nome = Console.ReadLine();
-            }
-            for(int i = 0; i < jogadores.Length; i++)
-            {
-                if(jogadores[i].Nome == nome)
+
+                for (int i = 0; i < jogadores.Length; i++)
                 {
-                    Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
+                    if (jogadores[i].Nome == nome)
+                    {
+                        Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
+                    }
                 }
             }
-        } 
+
+        }
 
         static void QuantidadeDeJogadores()
         {
@@ -66,7 +72,7 @@ namespace Rouba_Monte
 
                 if (numDeJogadores < 2)
                 {
-                    Esperar(tempoDeEsperar, mensagemErro);
+                    Esperar(mensagemErro);
                 }
 
             } while (numDeJogadores < 2);
@@ -91,7 +97,7 @@ namespace Rouba_Monte
 
                     if (nome == "" || nome == null)
                     {
-                        Esperar(tempoDeEsperar, mensagemErro);
+                        Esperar(mensagemErro);
                     }
 
                 } while (nome == "" || nome == null);
@@ -115,7 +121,7 @@ namespace Rouba_Monte
 
                 if (numDeBaralho < 1)
                 {
-                    Esperar(tempoDeEsperar, mensagemErro);
+                    Esperar(mensagemErro);
                 }
 
             } while (numDeBaralho < 1);
@@ -123,64 +129,7 @@ namespace Rouba_Monte
             return new MonteDoJogo(numDeBaralho);
         }
 
-        static void Cabecalho()
-        {
-            Console.Clear();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            Console.WriteLine($"===========================================");
-
-            Console.Write("            ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("♣");
-            Console.ResetColor();
-
-            Console.Write(" ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("♥");
-            Console.ResetColor();
-
-            Console.Write(" Rouba monte ");
-
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("♠");
-            Console.ResetColor();
-
-            Console.Write(" ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("♦");
-            Console.ResetColor();
-
-            Console.WriteLine("            ");
-
-            Console.WriteLine($"===========================================\n\n\n\n\n");
-        }
-
-        static void Esperar(int milissegundos, string mensagem)
-        {
-            int tempoPassou = 0;
-
-            Cabecalho();
-            Console.WriteLine($"{mensagem}\n");
-            Console.WriteLine("Aguarde 5 segundos ou aperte ENTER para começar...");
-            while (tempoPassou < milissegundos)
-            {
-                if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                    tempoPassou = milissegundos;
-                }
-                else
-                {
-                    Thread.Sleep(100);
-                    tempoPassou += 100;
-                }
-            }
-        }
+       
 
 
     }
