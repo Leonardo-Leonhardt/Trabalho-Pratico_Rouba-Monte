@@ -12,48 +12,119 @@ namespace Rouba_Monte
         {
             Cabecalho();
 
-            QuantidadeDeJogadores();
-            IniciarPartidas();
-            //FinalizarPrograma();
+            Inicio();
+        }
+
+        static void Menu1()
+        {
+            Cabecalho();
+
+            Console.WriteLine($"Opção");
+            Console.WriteLine($"1 - Inicia o jogo.");
+            Console.WriteLine($"0 - sair.");
+        }
+
+        static void Menu2()
+        {
+            Cabecalho();
+
+            Console.WriteLine($"Opção");
+            Console.WriteLine($"1 - Inicia uma nova partida.");
+            Console.WriteLine($"2 - Ver historido de um jogador.");
+            Console.WriteLine($"0 - sair.");
+        }
+
+        static void ProcessarFimDeJogo()
+        {
+            int opcao;
+            string text = "Saindo!!!";
+
+            do
+            {
+                Menu2();
+
+                Console.WriteLine($"Digite uma opção:\n");
+                opcao = Convert.ToInt32(Console.ReadLine());
+
+                switch (opcao)
+                {
+                    case 0:
+                        Esperar(text);
+                        break;
+                    case 1:
+                        IniciarPartidas();
+                        break;
+                    case 2:
+                        ExibirHistoricoJogador();
+                        break;
+                }
+            } while (opcao != 0);
         }
 
         static void IniciarPartidas()
         {
-            char resp = 's';
-
             Partida partida;
-            while (resp != 'n')
-            {
-                partida = new Partida(jogadores, QuantidadeDeBaralho());
-                partida.IniciarPartida();
-                ExibirHistoricoJogador();
-                Console.WriteLine("\nDeseja iniciar uma nova partida? - s / n");// talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
 
-                resp = char.Parse(Console.ReadLine());
-            }
+            partida = new Partida(jogadores, QuantidadeDeBaralho());
+            partida.IniciarPartida();
+
+        }
+
+        static void Inicio()
+        {
+            int opcao;
+            Partida partida;
+            string text = "Saindo!!!";
+            string text2 = "Opção invalida!!!";
+
+            do
+            {
+                Menu1();
+
+                Console.WriteLine($"Digite uma opção:\n");
+                opcao = Convert.ToInt32(Console.ReadLine());
+
+                switch (opcao)
+                {
+                    case 0:
+                        Esperar(text);
+                        break;
+                    case 1:
+                        QuantidadeDeJogadores();
+                        partida = new Partida(jogadores, QuantidadeDeBaralho());
+                        partida.IniciarPartida();
+                        ProcessarFimDeJogo();
+                        break;
+                    default:
+                        Esperar(text2);
+                        break;
+                }
+            } while (opcao != 0 && opcao != 1);
+
         }
 
         static void ExibirHistoricoJogador()
         {
-            char resp = 's';
-            string nome = "";
-            Console.WriteLine("\nDeseja visualizar o histórico de algum jogador em específico? - s / n"); // talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
-            resp = char.Parse(Console.ReadLine());
-            resp = char.ToUpper(resp);
+            string nome;
+            bool achouNome = false;
 
+            Cabecalho();
+            Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");
+            nome = Console.ReadLine();
 
-            if (resp == 'S')
+            for (int i = 0; i < jogadores.Length; i++)
             {
-                Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");//tratamento de nome errado
-                nome = Console.ReadLine();
-
-                for (int i = 0; i < jogadores.Length; i++)
+                if (jogadores[i].Nome == nome.ToLower())
                 {
-                    if (jogadores[i].Nome == nome)
-                    {
-                        Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
-                    }
+                    achouNome = true;
+                    Cabecalho();
+                    Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
                 }
+            }
+
+            if (!achouNome)
+            {
+                Console.WriteLine($"Jogador {nome} não foi encontrado!!!");
             }
 
         }
@@ -102,7 +173,7 @@ namespace Rouba_Monte
 
                 } while (nome == "" || nome == null);
 
-                jogadores[i] = new Jogador(nome);
+                jogadores[i] = new Jogador(nome.ToLower());
 
             }
         }
@@ -128,9 +199,5 @@ namespace Rouba_Monte
 
             return new MonteDoJogo(numDeBaralho);
         }
-
-       
-
-
     }
 }

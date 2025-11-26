@@ -164,6 +164,7 @@ namespace Rouba_Monte
             ExibirRanking(); //ordenado por cartas no monte de cada jogador
 
             Console.WriteLine($"\n\n==> {_descarte.ToString()}"); //so um teste
+            Esperar();
         }
 
         private void DefinirRanking()
