@@ -5,26 +5,30 @@ using System.Text;
 namespace Rouba_Monte
 {
     internal class Partida
-    {   
+    {
         private MonteDoJogo _monteDoJogo;
         private Descarte _descarte;
         private Jogador[] _jogadores;
         private int _rodada;
         private Jogador[] _ranking;
 
-        public Partida(Jogador[] jogadores)
+        public Partida(Jogador[] jogadores, MonteDoJogo monteDoJogo)
         {
-            Console.WriteLine("Com quantos baralhos vocês jogarão?");
-            _monteDoJogo = new MonteDoJogo(int.Parse(Console.ReadLine()));
-            _descarte = new Descarte();
-            _jogadores = jogadores;
-            _rodada = 0;
-        }   
-        
+            this._monteDoJogo = monteDoJogo;
+            this._descarte = new Descarte();
+            this._jogadores = jogadores;
+            this._rodada = 0;
+        }
+
         public void IniciarPartida()
         {
-            while(_monteDoJogo.QuantCartaTem > 0)
+            while (_monteDoJogo.QuantCartaTem > 0)
+            {
+                Console.ReadKey();
                 IniciarNovaRodada();
+            }
+
+
             FinalizarPartida();
         }
 
@@ -32,72 +36,74 @@ namespace Rouba_Monte
         {
             _rodada++;
             Console.WriteLine($"Iniciando a Rodada {_rodada}");
-            foreach(Jogador jogador in _jogadores) //Não linear ainda
+            foreach (Jogador jogador in _jogadores) //Não linear ainda
             {
                 NovaJogada(jogador, _monteDoJogo, _descarte);
             }
         }
 
-       //O método está recursivo para fins de teste, não sei se tem que trocar para linear (ou se assim já está considerado linear)
-         private void NovaJogada(Jogador jogador, MonteDoJogo _monteDoJogo, Descarte _descarte)
+        //O método está recursivo para fins de teste, não sei se tem que trocar para linear (ou se assim já está considerado linear)
+        private void NovaJogada(Jogador jogador, MonteDoJogo _monteDoJogo, Descarte _descarte)
         {
             Carta cartaDaVez = jogador.ComprarCarta(_monteDoJogo);
-            if(cartaDaVez is null)
+            if (cartaDaVez is null)
                 return;
-            
+
             Console.WriteLine(cartaDaVez); //usa o método ToString implicitamente, alterar para o formato de arquivo pedido no trab
-            
-            if(TentarRoubarMontes(jogador, cartaDaVez))
+
+            if (TentarRoubarMontes(jogador, cartaDaVez) || TentarPegarDescarte(jogador, _descarte, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez))
+            {
                 NovaJogada(jogador, _monteDoJogo, _descarte);
+
+            }
             else
             {
-                if(TentarPegarDescarte(jogador, _descarte, cartaDaVez))
-                    NovaJogada(jogador, _monteDoJogo, _descarte);
-                else
-                {
-                    if(TentarColocarNoMonte(jogador, cartaDaVez))
-                        NovaJogada(jogador, _monteDoJogo, _descarte);
-                    else
-                        _descarte.ReceberDescarte(cartaDaVez);
-                }
+                _descarte.ReceberDescarte(cartaDaVez);
             }
         }
-       
+
+
         private bool TentarRoubarMontes(Jogador jogador, Carta cartaDaVez)
         {
             bool conseguiuRoubar = false;
             Jogador jogadorRoubado = new Jogador(null);
 
-            foreach(Jogador jogadorComparado in _jogadores)
+            // logica tem que mudar eu tenho que compara com todos primeiro e ver quais jogadores tem acarta específica
+            // ai eu salvo a posicao dele/s se for mais de um ai compata para ver que tem mais carta, se tive o mesmo numero
+            // pega o mente aleatoriamente
+
+            // do jeito que tar ele vai compara um por um e se tivar mais de 1 ele vai pegar de todos
+
+            foreach (Jogador jogadorComparado in _jogadores)
             {
-                if(jogador != jogadorComparado)
-                {    
+                if (jogador != jogadorComparado) // talvel com a fila circula fique melhor
+                {
                     if (jogador.PodeRoubar(cartaDaVez, jogadorComparado))
                     {
-                        if(jogadorRoubado.Monte.QuantCartaTem > jogadorComparado.Monte.QuantCartaTem)
+                        if (jogadorRoubado.Monte.QuantCartaTem > jogadorComparado.Monte.QuantCartaTem)
                         {
                             jogadorRoubado = jogadorComparado;
                         }
                         else if (jogadorRoubado.Monte.QuantCartaTem == jogadorComparado.Monte.QuantCartaTem)
                         {
                             Random jogadorAleatorio = new Random();
-                            if(jogadorAleatorio.Next(1) == 1)
+                            if (jogadorAleatorio.Next(1) == 1)
                                 jogadorRoubado = jogadorComparado;
                         }
                         conseguiuRoubar = true;
                     }
                 }
             }
-            if(conseguiuRoubar)
-                jogador.RoubarMonte(cartaDaVez, jogadorRoubado);   
+            if (conseguiuRoubar)
+                jogador.RoubarMonte(cartaDaVez, jogadorRoubado);
             return conseguiuRoubar;
         }
 
         private bool TentarPegarDescarte(Jogador jogador, Descarte _descarte, Carta cartaDaVez)
         {
             Carta cartaDescarte = _descarte.PegarCarta(cartaDaVez);
-            if(cartaDescarte is not null)
-            {   
+            if (cartaDescarte is not null)
+            {
                 jogador.PegarDescarte(cartaDescarte, cartaDaVez);
                 return true;
             }
@@ -113,7 +119,7 @@ namespace Rouba_Monte
             }
             return false;
         }
-    
+
         private void FinalizarPartida()
         {
             DefinirRanking(); //o jogador que tiver mais cartas ganha a partida, em caso de empate todos ganham
@@ -122,16 +128,17 @@ namespace Rouba_Monte
         }
 
         private void DefinirRanking()
-        { 
-            
+        {
+
         }
 
         private void ExibirVencedores()
         {
+            Console.ReadKey();
             int pontuacaoMax = _ranking[0].Monte.QuantCartaTem;
-            foreach(Jogador jogador in _ranking)
+            foreach (Jogador jogador in _ranking)
             {
-                if(jogador.Monte.QuantCartaTem >= pontuacaoMax)
+                if (jogador.Monte.QuantCartaTem >= pontuacaoMax)
                     Console.WriteLine($"{jogador}, você é um(a) Vencedor(a)!!");
             }
         }
