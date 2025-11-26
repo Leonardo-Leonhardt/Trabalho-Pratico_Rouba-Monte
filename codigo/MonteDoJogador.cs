@@ -52,6 +52,7 @@ namespace Rouba_Monte
             {
                 throw new InvalidOperationException("O monte está vazio");
             }
+
             return _cartas.Peek();
         }
     }
