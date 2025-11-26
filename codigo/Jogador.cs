@@ -45,15 +45,13 @@ namespace Rouba_Monte
         {
             try
             {
-                if(cartaDaVez.Valor == jogador.Monte.VerUtimaCarta().Valor)
-                    return true;
+                return cartaDaVez.Valor == jogador.Monte.VerUtimaCarta().Valor;
             }
             catch(InvalidOperationException ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
             }
-            return false;
         }
 
         public bool CompararCartas(Carta outra)

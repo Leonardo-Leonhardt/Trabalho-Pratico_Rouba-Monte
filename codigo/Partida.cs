@@ -14,10 +14,10 @@ namespace Rouba_Monte
 
         public Partida(Jogador[] jogadores, MonteDoJogo monteDoJogo)
         {
-            this._monteDoJogo = monteDoJogo;
-            this._descarte = new Descarte();
-            this._jogadores = jogadores;
-            this._rodada = 0;
+            _monteDoJogo = monteDoJogo;
+            _descarte = new Descarte();
+            _jogadores = jogadores;
+            _rodada = 0;
         }
 
         public void IniciarPartida()
@@ -36,13 +36,12 @@ namespace Rouba_Monte
         {
             _rodada++;
             Console.WriteLine($"Iniciando a Rodada {_rodada}");
-            foreach (Jogador jogador in _jogadores) //Não linear ainda
+            foreach (Jogador jogador in _jogadores)
             {
                 NovaJogada(jogador, _monteDoJogo, _descarte);
             }
         }
 
-        //O método está recursivo para fins de teste, não sei se tem que trocar para linear (ou se assim já está considerado linear)
         private void NovaJogada(Jogador jogador, MonteDoJogo _monteDoJogo, Descarte _descarte)
         {
             Carta cartaDaVez = jogador.ComprarCarta(_monteDoJogo);
@@ -65,35 +64,34 @@ namespace Rouba_Monte
 
         private bool TentarRoubarMontes(Jogador jogador, Carta cartaDaVez)
         {
+            List<Jogador> jogadoresRoubaveis = new List<Jogador>();
+            Jogador jogadorRoubado = new Jogador();
             bool conseguiuRoubar = false;
-            Jogador jogadorRoubado = new Jogador(null);
-
-            // logica tem que mudar eu tenho que compara com todos primeiro e ver quais jogadores tem acarta específica
-            // ai eu salvo a posicao dele/s se for mais de um ai compata para ver que tem mais carta, se tive o mesmo numero
-            // pega o mente aleatoriamente
-
-            // do jeito que tar ele vai compara um por um e se tivar mais de 1 ele vai pegar de todos
+            int maiorMonte = 0;
 
             foreach (Jogador jogadorComparado in _jogadores)
             {
-                if (jogador != jogadorComparado) // talvel com a fila circula fique melhor
+                if (jogadorComparado != jogador && jogador.PodeRoubar(cartaDaVez, jogadorComparado))
                 {
-                    if (jogador.PodeRoubar(cartaDaVez, jogadorComparado))
+                    if(jogadorComparado.Monte.QuantCartaTem > maiorMonte)
                     {
-                        if (jogadorRoubado.Monte.QuantCartaTem > jogadorComparado.Monte.QuantCartaTem)
-                        {
-                            jogadorRoubado = jogadorComparado;
-                        }
-                        else if (jogadorRoubado.Monte.QuantCartaTem == jogadorComparado.Monte.QuantCartaTem)
-                        {
-                            Random jogadorAleatorio = new Random();
-                            if (jogadorAleatorio.Next(1) == 1)
-                                jogadorRoubado = jogadorComparado;
-                        }
-                        conseguiuRoubar = true;
+                        maiorMonte = jogadorComparado.Monte.QuantCartaTem;
+                        jogadorRoubado = jogadorComparado;
+                        jogadoresRoubaveis.Clear();
+                        jogadoresRoubaveis.Add(jogadorComparado);
                     }
+                    else if(jogadorComparado.Monte.QuantCartaTem == maiorMonte)
+                        jogadoresRoubaveis.Add(jogadorComparado);
+
+                    conseguiuRoubar = true;
                 }
             }
+            if (jogadoresRoubaveis.Count > 1)
+            {
+                Random jogadorAleatorio = new Random();
+                jogadorRoubado = jogadoresRoubaveis[jogadorAleatorio.Next(jogadoresRoubaveis.Count)];
+            }
+            
             if (conseguiuRoubar)
                 jogador.RoubarMonte(cartaDaVez, jogadorRoubado);
             return conseguiuRoubar;

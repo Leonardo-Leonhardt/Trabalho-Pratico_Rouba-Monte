@@ -28,7 +28,7 @@ namespace Rouba_Monte
 
 
             Cabecalho();
-            Console.WriteLine($"\nCatas: {monteDoJogo.QuantCartaTem}");
+            Console.WriteLine($"\nQuantidade de Cartas: {monteDoJogo.QuantCartaTem}");
             Console.WriteLine($"\nJogadores: ");
             foreach (Jogador jogador in jogadores)
             {
