@@ -1,49 +1,64 @@
 ﻿using System.Text;
+using static Rouba_Monte.Tela;
+using static Rouba_Monte.Parada;
 
 namespace Rouba_Monte
 {
     internal class Program
     {
         static Jogador[] jogadores;
-        static MonteDoJogo monteDoJogo;
-
-        static int tempoDeEsperar = 5000;
 
         static void Main()
         {
             Cabecalho();
 
-            QuantidadeDeJogador();
-            QuantidadeDeBaralho();
+            QuantidadeDeJogadores();
+            IniciarPartidas();
+            //FinalizarPrograma();
+        }
 
+        static void IniciarPartidas()
+        {
+            char resp = 's';
 
-
-
-
-
-
-
-
-
-
-
-            Cabecalho();
-            Console.WriteLine($"\nCatas: {monteDoJogo.QuantCartaTem}");
-            Console.WriteLine($"\nJogadores: ");
-            foreach (Jogador jogador in jogadores)
+            Partida partida;
+            while (resp != 'n')
             {
-                Console.WriteLine($"{jogador.ToString()}");
+                partida = new Partida(jogadores, QuantidadeDeBaralho());
+                partida.IniciarPartida();
+                ExibirHistoricoJogador();
+                Console.WriteLine("\nDeseja iniciar uma nova partida? - s / n");// talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
+
+                resp = char.Parse(Console.ReadLine());
+            }
+        }
+
+        static void ExibirHistoricoJogador()
+        {
+            char resp = 's';
+            string nome = "";
+            Console.WriteLine("\nDeseja visualizar o histórico de algum jogador em específico? - s / n"); // talvez algo parecido com um menu ficaria menhor, tem que fazer o tratamento das alternativas
+            resp = char.Parse(Console.ReadLine());
+            resp = char.ToUpper(resp);
+
+
+            if (resp == 'S')
+            {
+                Console.WriteLine($"Digite o nome do jogador que deseja pesquisar:");//tratamento de nome errado
+                nome = Console.ReadLine();
+
+                for (int i = 0; i < jogadores.Length; i++)
+                {
+                    if (jogadores[i].Nome == nome)
+                    {
+                        Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
+                    }
+                }
             }
 
-
-            Console.ReadKey();
         }
 
-        static void StartTheGame()
-        {
-
-        }
-        static void QuantidadeDeJogador()
+        static void QuantidadeDeJogadores()
         {
             int numDeJogadores;
             string mensagemErro = "Número de jogadores insuficiente!!!";
@@ -57,7 +72,7 @@ namespace Rouba_Monte
 
                 if (numDeJogadores < 2)
                 {
-                    Esperar(tempoDeEsperar, mensagemErro);
+                    Esperar(mensagemErro);
                 }
 
             } while (numDeJogadores < 2);
@@ -82,7 +97,7 @@ namespace Rouba_Monte
 
                     if (nome == "" || nome == null)
                     {
-                        Esperar(tempoDeEsperar, mensagemErro);
+                        Esperar(mensagemErro);
                     }
 
                 } while (nome == "" || nome == null);
@@ -92,7 +107,7 @@ namespace Rouba_Monte
             }
         }
 
-        static void QuantidadeDeBaralho()
+        static MonteDoJogo QuantidadeDeBaralho()
         {
             int numDeBaralho;
             string mensagemErro = "Número de Baralho insuficiente!!!";
@@ -101,77 +116,20 @@ namespace Rouba_Monte
             {
                 Cabecalho();
 
-                Console.WriteLine($"Quantos Baralho vão ter o jogo?");
+                Console.WriteLine($"Quantos Baralhos vão ter o jogo?");
                 numDeBaralho = Convert.ToInt32(Console.ReadLine());
 
                 if (numDeBaralho < 1)
                 {
-                    Esperar(tempoDeEsperar, mensagemErro);
+                    Esperar(mensagemErro);
                 }
 
             } while (numDeBaralho < 1);
 
-            monteDoJogo = new MonteDoJogo(numDeBaralho);
+            return new MonteDoJogo(numDeBaralho);
         }
 
-        static void Cabecalho()
-        {
-            Console.Clear();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            Console.WriteLine($"===========================================");
-
-            Console.Write("            ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("♣");
-            Console.ResetColor();
-
-            Console.Write(" ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("♥");
-            Console.ResetColor();
-
-            Console.Write(" Rouba monte ");
-
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("♠");
-            Console.ResetColor();
-
-            Console.Write(" ");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("♦");
-            Console.ResetColor();
-
-            Console.WriteLine("            ");
-
-            Console.WriteLine($"===========================================\n\n\n\n\n");
-        }
-
-        static void Esperar(int milissegundos, string mensagem)
-        {
-            int tempoPassou = 0;
-
-            Cabecalho();
-            Console.WriteLine($"{mensagem}\n");
-            Console.WriteLine("Aguarde 5 segundos ou aperte ENTER para começar...");
-            while (tempoPassou < milissegundos)
-            {
-                if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                    tempoPassou = milissegundos;
-                }
-                else
-                {
-                    Thread.Sleep(100);
-                    tempoPassou += 100;
-                }
-            }
-        }
+       
 
 
     }

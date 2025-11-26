@@ -50,7 +50,7 @@ namespace Rouba_Monte
         {
             if (_cartas.Count == 0)
             {
-                throw new InvalidOperationException("O monte está vazio");
+                throw new InvalidOperationException("O monte do jogador está vazio");
             }
 
             return _cartas.Peek();
