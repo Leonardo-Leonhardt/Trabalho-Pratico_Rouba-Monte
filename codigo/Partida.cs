@@ -24,7 +24,9 @@ namespace Rouba_Monte
 
         public void IniciarPartida()
         {
+            Console.WriteLine($"Monte do jogo criado com {_monteDoJogo.QuantCartaTem} cartas");
             ResetarDadoJogadores();
+
             while (_monteDoJogo.QuantCartaTem > 0)
             {
                 //Console.ReadKey();
