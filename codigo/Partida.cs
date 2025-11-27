@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static Rouba_Monte.Tela;
 using static Rouba_Monte.Parada;
+using static Rouba_Monte.Arquivo;
 
 namespace Rouba_Monte
 {
@@ -32,7 +33,7 @@ namespace Rouba_Monte
 
             while (_monteDoJogo.QuantCartaTem > 0)
             {
-                Console.ReadKey();
+                //Console.ReadKey();
                 Cabecalho();
                 IniciarNovaRodada();
             }

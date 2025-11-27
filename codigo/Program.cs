@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using static Rouba_Monte.Tela;
 using static Rouba_Monte.Parada;
+using static Rouba_Monte.Arquivo;
 
 namespace Rouba_Monte
 {
@@ -10,6 +11,13 @@ namespace Rouba_Monte
 
         static void Main()
         {
+
+            // CriarArquivo();
+
+
+
+
+
             Cabecalho();
 
             Inicio();
@@ -49,6 +57,7 @@ namespace Rouba_Monte
                 switch (opcao)
                 {
                     case 0:
+                        FechaArquivo();
                         Esperar(text);
                         break;
                     case 1:
@@ -66,6 +75,7 @@ namespace Rouba_Monte
             Partida partida;
 
             partida = new Partida(jogadores, QuantidadeDeBaralho());
+
             partida.IniciarPartida();
 
         }
@@ -90,6 +100,7 @@ namespace Rouba_Monte
                         Esperar(text);
                         break;
                     case 1:
+                        CriarArquivo();
                         QuantidadeDeJogadores();
                         partida = new Partida(jogadores, QuantidadeDeBaralho());
                         partida.IniciarPartida();
@@ -151,7 +162,10 @@ namespace Rouba_Monte
 
             jogadores = new Jogador[numDeJogadores];
 
+            string mensagemLog = $"\n\nO jogo tem: \n{numDeJogadores} Jogadores";
+
             NomeDosJogadores();
+            SalvaDados(mensagemLog);
         }
 
         static void NomeDosJogadores()
@@ -197,6 +211,9 @@ namespace Rouba_Monte
                 }
 
             } while (numDeBaralho < 1);
+
+            string mensagemLog = $"{numDeBaralho} de Baralho";
+            SalvaDados(mensagemLog);
 
             return new MonteDoJogo(numDeBaralho);
         }
