@@ -32,7 +32,7 @@ namespace Rouba_Monte
 
             while (_monteDoJogo.QuantCartaTem > 0)
             {
-                //Console.ReadKey();
+                Console.ReadKey();
                 Cabecalho();
                 IniciarNovaRodada();
             }

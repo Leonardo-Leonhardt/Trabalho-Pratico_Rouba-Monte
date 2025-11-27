@@ -119,12 +119,13 @@ namespace Rouba_Monte
                     achouNome = true;
                     Cabecalho();
                     Console.WriteLine($"Rank do {jogadores[i].Nome}\n{jogadores[i].ExibirRank()}");
+                    Esperar();
                 }
             }
 
             if (!achouNome)
             {
-                Console.WriteLine($"Jogador {nome} não foi encontrado!!!");
+                Esperar($"Jogador {nome} não foi encontrado!!!");
             }
 
         }
