@@ -19,30 +19,17 @@ namespace Rouba_Monte
             {
                 using (StreamWriter sw = new StreamWriter(caminho, false))
                 {
-
-                    sw.WriteLine($"{titulo}\n\n");
-
-
+                    sw.WriteLine($"{titulo}\n");
                 }
+
+                return true;
             }
             catch (Exception e)
             {
+                Console.WriteLine($"ERRO ao criar o arquivo: {e.Message}");
 
+                return false;
             }
-
-            return false;
-        }
-
-        public static bool AbrirArquivo()
-        {
-
-
-
-
-
-
-
-            return false;
         }
 
         public static bool FechaArquivo()
@@ -56,28 +43,17 @@ namespace Rouba_Monte
             {
                 using (StreamWriter sw = new StreamWriter(caminho, true))
                 {
-
                     sw.WriteLine($"{log}");
-
-
-
-
-
-
-
-
-
-
                 }
 
+                return $"Dados salvos com sucesso em: {caminho}";
             }
             catch (Exception e)
             {
+                Console.WriteLine($"ERRO ao salvar dados no arquivo: {e.Message}");
 
+                return $"FALHA ao salvar dados. Erro: {e.Message}";
             }
-
-
-            return log;
         }
 
 

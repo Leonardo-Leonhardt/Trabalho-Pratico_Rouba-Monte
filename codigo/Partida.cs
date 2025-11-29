@@ -53,13 +53,18 @@ namespace Rouba_Monte
         private void IniciarNovaRodada()
         {
             _rodada++;
+            string rodada = $"\n\nIniciando a Rodada {_rodada}";
+            string quantDeCartas = $"Nº de cartas: {_monteDoJogo.QuantCartaTem}";
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write($"\n\nIniciando a Rodada {_rodada}");
+            Console.Write(rodada);
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\nNº de cartas: {_monteDoJogo.QuantCartaTem}");
+            Console.WriteLine(quantDeCartas);
             Console.ResetColor();
+
+            SalvaDados(rodada);
+            SalvaDados(quantDeCartas);
 
             try
             {
@@ -70,28 +75,43 @@ namespace Rouba_Monte
             }
             catch (InvalidOperationException ex)
             {
+                string mensagem = $"\n{ex.Message}, Finalizando a partida...";
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"\n{ex.Message}, Finalizando a partida...");
+                Console.WriteLine(mensagem);
                 Console.ResetColor();
+
+                SalvaDados(mensagem);
             }
         }
 
         private void NovaJogada(Jogador jogador, MonteDoJogo _monteDoJogo, Descarte _descarte)
         {
-            Console.WriteLine($"\n\nNova Jogada - {jogador.Nome}");
+            string jogada = $"\n\nNova Jogada - {jogador.Nome}";
+            string cata = $"Carta da vez:";
+
+            Console.WriteLine(jogada);
             Carta cartaDaVez = jogador.ComprarCarta(_monteDoJogo);
             if (cartaDaVez is null)
                 throw new InvalidOperationException("O monte do jogo está vazio");
 
-            Console.WriteLine($"Carta da vez: {cartaDaVez}"); //usa o método ToString implicitamente, alterar para o formato de arquivo pedido no trab
+            Console.WriteLine($"{cata} {cartaDaVez}");
+
+            SalvaDados(jogada);
+            SalvaDados($"{cata} {cartaDaVez}");
 
             if (TentarRoubarMontes(jogador, cartaDaVez) || TentarPegarDescarte(jogador, _descarte, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez) || TentarColocarNoMonte(jogador, cartaDaVez))
                 NovaJogada(jogador, _monteDoJogo, _descarte);
             else
             {
+                string vez = $"A vez de {jogador.Nome} foi finalizada. O descarte recebe a carta da vez";
+                string descarte = $"\nDescarte";
+
                 Console.Write($"A vez de {jogador.Nome} foi finalizada. O descarte recebe a carta da vez");
                 _descarte.ReceberDescarte(cartaDaVez);
-                Console.Write($"\nDescarte{_descarte}");
+                Console.Write($"\n{descarte} {_descarte}");
+
+                SalvaDados(vez);
+                SalvaDados($"\n{descarte} {_descarte}\n");
             }
         }
 
@@ -121,15 +141,23 @@ namespace Rouba_Monte
             }
             if (jogadoresRoubaveis.Count > 1)
             {
-                Console.WriteLine("Houve um empate, escolhendo aleatoriamente um dos jogadores com maior monte para ser roubado...");
+                string empate = "Houve um empate, escolhendo aleatoriamente um dos jogadores com maior monte para ser roubado...";
+
+                Console.WriteLine(empate);
                 Random jogadorAleatorio = new Random();
                 jogadorRoubado = jogadoresRoubaveis[jogadorAleatorio.Next(jogadoresRoubaveis.Count)];
+
+                SalvaDados(empate);
             }
 
             if (conseguiuRoubar)
             {
-                Console.Write($"{jogadorRoubado.Nome} teve seu monte com {jogadorRoubado.Monte.QuantCartaTem} cartas roubado por {jogador.Nome}. A carta do topo de seu monte era {jogadorRoubado.Monte.VerUtimaCarta()}");
+                string roubado = $"{jogadorRoubado.Nome} teve seu monte com {jogadorRoubado.Monte.QuantCartaTem} cartas roubado por {jogador.Nome}. A carta do topo de seu monte era {jogadorRoubado.Monte.VerUtimaCarta()}";
+
+                Console.Write(roubado);
                 jogador.RoubarMonte(cartaDaVez, jogadorRoubado);
+
+                SalvaDados(roubado);
             }
             return conseguiuRoubar;
         }
@@ -137,10 +165,16 @@ namespace Rouba_Monte
         private bool TentarPegarDescarte(Jogador jogador, Descarte _descarte, Carta cartaDaVez)
         {
             Carta cartaDescarte = _descarte.PegarCarta(cartaDaVez);
+
             if (cartaDescarte is not null)
             {
-                Console.Write($"{jogador.Nome} pegou a carta {cartaDescarte} do descarte");
+                string pegou = $"{jogador.Nome} pegou a carta {cartaDescarte} do descarte";
+
+                Console.Write(pegou);
                 jogador.PegarDescarte(cartaDescarte, cartaDaVez);
+
+                SalvaDados(pegou);
+
                 return true;
             }
             return false;
@@ -150,8 +184,13 @@ namespace Rouba_Monte
         {
             if (jogador.CompararCartas(cartaDaVez))
             {
-                Console.Write($"{jogador.Nome} colocou a carta da vez no seu monte");
+                string coloca = $"{jogador.Nome} colocou a carta da vez no seu monte";
+
+                Console.Write(coloca);
                 jogador.Monte.AddCarta(cartaDaVez);
+
+                SalvaDados(coloca);
+
                 return true;
             }
             return false;
@@ -159,12 +198,17 @@ namespace Rouba_Monte
 
         private void FinalizarPartida()
         {
+            string cartasNoDescarte = $"Sobrou no descarte {_descarte.ToString()}";
             Cabecalho();
             DefinirRanking(); //o jogador que tiver mais cartas ganha a partida, em caso de empate todos ganham
             ExibirVencedores(); //nome, posição e cartas no monte
             ExibirRanking(); //ordenado por cartas no monte de cada jogador
 
-            Console.WriteLine($"\n\n==> {_descarte.ToString()}"); //so um teste
+            Console.WriteLine(cartasNoDescarte);
+
+            SalvaDados(cartasNoDescarte);
+            SalvaDados("\n==================================================================================");
+
             Esperar();
         }
 
@@ -177,24 +221,37 @@ namespace Rouba_Monte
 
         private void ExibirVencedores()
         {
+            string partida = "\n\nVencedores da partida";
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine("\n\nVencedores da partida");
+            Console.WriteLine(partida);
             Console.ResetColor();
 
             int pontuacaoMax = _ranking.Array[0].Monte.QuantCartaTem;
             foreach (Jogador jogador in _jogadores)
             {
+                string vencedor = $"{jogador}, você é um(a) Vencedor(a)!!";
+
                 if (jogador.Monte.QuantCartaTem >= pontuacaoMax)
-                    Console.WriteLine($"{jogador}, você é um(a) Vencedor(a)!!");
+                {
+                    Console.WriteLine(vencedor);
+
+                    SalvaDados(vencedor);
+                }
             }
         }
         private void ExibirRanking()
         {
+            string ranking = "\n\nRanking Final";
+
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n\nRanking Final");
+            Console.WriteLine(ranking);
             Console.ResetColor();
             Console.Write(_ranking);
+
+            SalvaDados(ranking);
+            SalvaDados(_ranking.ToString());
+           
         }
     }
 }

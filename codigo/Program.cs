@@ -212,7 +212,7 @@ namespace Rouba_Monte
 
             } while (numDeBaralho < 1);
 
-            string mensagemLog = $"{numDeBaralho} de Baralho";
+            string mensagemLog = $"{numDeBaralho} Baralho";
             SalvaDados(mensagemLog);
 
             return new MonteDoJogo(numDeBaralho);
