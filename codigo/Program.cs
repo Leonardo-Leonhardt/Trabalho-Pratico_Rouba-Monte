@@ -11,15 +11,7 @@ namespace Rouba_Monte
 
         static void Main()
         {
-
-            // CriarArquivo();
-
-
-
-
-
             Cabecalho();
-
             Inicio();
         }
 
@@ -28,7 +20,7 @@ namespace Rouba_Monte
             Cabecalho();
 
             Console.WriteLine($"Opção");
-            Console.WriteLine($"1 - Inicia o jogo.");
+            Console.WriteLine($"1 - Iniciar o jogo.");
             Console.WriteLine($"0 - sair.");
         }
 
@@ -37,8 +29,8 @@ namespace Rouba_Monte
             Cabecalho();
 
             Console.WriteLine($"Opção");
-            Console.WriteLine($"1 - Inicia uma nova partida.");
-            Console.WriteLine($"2 - Ver historido de um jogador.");
+            Console.WriteLine($"1 - Iniciar uma nova partida.");
+            Console.WriteLine($"2 - Ver historico de um jogador.");
             Console.WriteLine($"0 - sair.");
         }
 
@@ -162,9 +154,12 @@ namespace Rouba_Monte
 
             jogadores = new Jogador[numDeJogadores];
 
-            string mensagemLog = $"\n\nO jogo tem: \n{numDeJogadores} Jogadores";
-
             NomeDosJogadores();
+            
+            string mensagemLog = $"\n\nO jogo tem: \n{numDeJogadores} Jogadores";
+            foreach (Jogador jogador in jogadores)
+                mensagemLog += $"\n - {jogador.Nome}";
+
             SalvaDados(mensagemLog);
         }
 
@@ -196,7 +191,7 @@ namespace Rouba_Monte
         static MonteDoJogo QuantidadeDeBaralho()
         {
             int numDeBaralho;
-            string mensagemErro = "Número de Baralho insuficiente!!!";
+            string mensagemErro = "Número de Baralhos insuficiente!!!";
 
             do
             {
@@ -212,7 +207,7 @@ namespace Rouba_Monte
 
             } while (numDeBaralho < 1);
 
-            string mensagemLog = $"{numDeBaralho} Baralho";
+            string mensagemLog = $"{numDeBaralho} Baralho(s)";
             SalvaDados(mensagemLog);
 
             return new MonteDoJogo(numDeBaralho);

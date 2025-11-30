@@ -33,7 +33,6 @@ namespace Rouba_Monte
 
             while (_monteDoJogo.QuantCartaTem > 0)
             {
-                //Console.ReadKey();
                 Cabecalho();
                 IniciarNovaRodada();
             }
@@ -53,7 +52,7 @@ namespace Rouba_Monte
         private void IniciarNovaRodada()
         {
             _rodada++;
-            string rodada = $"\n\nIniciando a Rodada {_rodada}";
+            string rodada = $"\n\nIniciando a Rodada {_rodada} ";
             string quantDeCartas = $"Nº de cartas: {_monteDoJogo.QuantCartaTem}";
 
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -200,9 +199,9 @@ namespace Rouba_Monte
         {
             string cartasNoDescarte = $"Sobrou no descarte {_descarte.ToString()}";
             Cabecalho();
-            DefinirRanking(); //o jogador que tiver mais cartas ganha a partida, em caso de empate todos ganham
-            ExibirVencedores(); //nome, posição e cartas no monte
-            ExibirRanking(); //ordenado por cartas no monte de cada jogador
+            DefinirRanking();
+            ExibirVencedores();
+            ExibirRanking();
 
             Console.WriteLine(cartasNoDescarte);
 

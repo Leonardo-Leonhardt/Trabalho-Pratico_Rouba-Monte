@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Rouba_Monte
 {
-    // ja testado
     internal class MonteDoJogo : Monte
     {
         private string[] _naipe = new string[] { "copas", "espadas", "ouros", "paus" };
